@@ -1,6 +1,12 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {axiosApi} from '../../axios-Api';
-import {ApiCategories, ApiTransactions, TransactionType, TransactionWhitCategory} from '../../types';
+import {
+  ApiCategories,
+  ApiTransactions,
+  EditTransactionType,
+  TransactionType,
+  TransactionWhitCategory
+} from '../../types';
 
 export const getTransaction = createAsyncThunk<TransactionWhitCategory>(
   'transaction/fetchTransaction',
@@ -60,3 +66,13 @@ export const deleteTransaction = createAsyncThunk<void, string>(
     }
   }
 );
+
+export const fetcheditTransaction = createAsyncThunk<void, EditTransactionType>(
+  'transaction/editTransaction',
+  async ({transaction, id}) => {
+    const response = await axiosApi.put(`/tracker/transaction/${id}.json`, transaction);
+    if (response.status !== 200) {
+      throw new Error('Try later');
+    }
+  }
+)

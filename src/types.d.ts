@@ -32,7 +32,18 @@ export interface Transaction extends TransactionType {
   isDeleting: boolean;
 }
 
+export interface EditTransaction extends Transaction{
+  type: string;
+  category: Category;
+  createdAt: string
+}
+
 export interface TransactionWhitCategory {
   transactions: Transaction[];
   category: Category[];
+}
+
+export interface EditTransactionType {
+  transaction: TransactionType,
+  id: string
 }

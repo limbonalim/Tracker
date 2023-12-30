@@ -1,7 +1,7 @@
 import {RootState} from '../../app/store';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {getTransaction} from './transactionThunks';
-import {Category, Transaction, TransactionWhitCategory} from '../../types';
+import {Category, EditTransaction, Transaction, TransactionWhitCategory} from '../../types';
 
 
 interface TransactionState {
@@ -10,6 +10,8 @@ interface TransactionState {
   isShowModal: boolean;
   isCreateTransaction: boolean;
   total: number;
+  currentEditTransaction: EditTransaction| null;
+  isLoading: boolean
 }
 
 const initialState: TransactionState = {
@@ -17,7 +19,9 @@ const initialState: TransactionState = {
   category: [],
   isShowModal: false,
   isCreateTransaction: false,
-  total: 0
+  total: 0,
+  currentEditTransaction: null,
+  isLoading: false,
 };
 
 const transactionSlice = createSlice({
@@ -36,6 +40,12 @@ const transactionSlice = createSlice({
     setDelete: (state, {payload: id}: PayloadAction<string>) => {
       const index = state.transaction.findIndex((item) => item.id === id);
       state.transaction[index].isDeleting = true;
+    },
+    setCurrentEdit: (state, {payload: transaction}: PayloadAction<EditTransaction>) => {
+      state.currentEditTransaction = transaction;
+    },
+    clearCurrentEdit: (state) => {
+      state.currentEditTransaction = null;
     }
   },
   extraReducers: (builder) => {
@@ -57,12 +67,15 @@ export const selectTransaction = (state: RootState) => state.transaction.transac
 export const selectIsShowTransactionModal = (state: RootState) => state.transaction.isShowModal;
 export const selectCategory = (state: RootState) => state.transaction.category;
 export const selectTotal = (state: RootState) => state.transaction.total;
+export const selectCurrentEditTransaction = (state: RootState) => state.transaction.currentEditTransaction;
 
 
 export const {
   showTransactionModal,
   closeTransactionModal,
   setTotal,
-  setDelete
+  setDelete,
+  setCurrentEdit,
+  clearCurrentEdit
 } = transactionSlice.actions;
 export const transactionReducers = transactionSlice.reducer;

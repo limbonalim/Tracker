@@ -1,8 +1,18 @@
-import React, {ChangeEvent, FormEvent, useState} from 'react';
+import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
-import {selectCategory} from '../../store/transaction/transactionSlice';
-import {createTransaction, getTransaction} from '../../store/transaction/transactionThunks';
-import {TransactionType} from '../../types';
+import {
+  clearCurrentEdit,
+  closeTransactionModal,
+  selectCategory,
+  selectCurrentEditTransaction
+} from '../../store/transaction/transactionSlice';
+import {createTransaction, fetcheditTransaction, getTransaction} from '../../store/transaction/transactionThunks';
+import {EditTransactionType, TransactionType} from '../../types';
+
+interface Edit {
+  id: string;
+  createAt: string;
+}
 
 
 const TransactionForm = () => {
@@ -13,6 +23,8 @@ const TransactionForm = () => {
   });
   const categories = useAppSelector(selectCategory);
   const dispatch = useAppDispatch();
+  const [edit, setEdit] = useState<Edit | null>(null)
+  const editTransaction = useAppSelector(selectCurrentEditTransaction);
 
   const incomeOptions = categories.reduce((acc: React.JSX.Element[], category) => {
     if (category.type === 'income') {
@@ -28,6 +40,25 @@ const TransactionForm = () => {
     return acc;
   }, []);
 
+  useEffect(() => {
+    if (editTransaction) {
+      setEdit({
+        id: editTransaction.id,
+        createAt: editTransaction.createdAt,
+      })
+      setTransaction({
+        type: editTransaction.type,
+        category: editTransaction.category.id,
+        amount: editTransaction.amount.toString(),
+      })
+      dispatch(clearCurrentEdit());
+    }
+  }, []);
+
+  const handleCancel = () => {
+    dispatch(closeTransactionModal());
+  };
+
   const onChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const {name, value} = e.target;
     setTransaction(prevState => {
@@ -40,6 +71,19 @@ const TransactionForm = () => {
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (edit) {
+      const editData: TransactionType = {
+        createdAt: edit.createAt,
+        category: transaction.category,
+        amount: parseFloat(transaction.amount),
+      };
+      const data:EditTransactionType = {
+        id: edit.id,
+        transaction: editData,
+      }
+      await dispatch(fetcheditTransaction(data))
+    }
+
     const data: TransactionType = {
       createdAt: new Date().toISOString(),
       category: transaction.category,
@@ -69,6 +113,7 @@ const TransactionForm = () => {
         <label htmlFor="category" className="form-label">Category:</label>
         <select
           onChange={onChange}
+          value={transaction.category}
           id="category"
           name="category"
           className="form-select"
@@ -98,7 +143,11 @@ const TransactionForm = () => {
           className="btn btn-outline-success"
         >Add
         </button>
-        <button type="button" className="btn btn-outline-secondary">Cancel</button>
+        <button
+          onClick={handleCancel}
+          type="button"
+          className="btn btn-outline-secondary"
+        >Cancel</button>
       </div>
     </form>
   );

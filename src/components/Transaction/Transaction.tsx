@@ -1,16 +1,16 @@
 import React from 'react';
 import dayjs from 'dayjs';
-import {CategoryType} from '../../types';
 import {useAppDispatch} from '../../app/hooks';
-import {setDelete} from '../../store/transaction/transactionSlice';
+import {setCurrentEdit, setDelete, showTransactionModal} from '../../store/transaction/transactionSlice';
 import {deleteTransaction, getTransaction} from '../../store/transaction/transactionThunks';
+import {Category} from '../../types';
 
 
 interface Props {
   id: string;
   date: string;
   amount: number;
-  category: CategoryType;
+  category: Category;
   isDeleting: boolean;
 }
 
@@ -27,6 +27,18 @@ const Transaction: React.FC<Props> = ({id, date, amount, category, isDeleting}) 
     dispatch(setDelete(id));
     await dispatch(deleteTransaction(id));
     dispatch(getTransaction());
+  };
+
+  const handleEdit = () => {
+    dispatch(setCurrentEdit({
+      id,
+      isDeleting,
+      createdAt: date,
+      category: category,
+      amount: amount,
+      type: category.type
+    }));
+    dispatch(showTransactionModal());
   };
 
   return (
@@ -47,6 +59,7 @@ const Transaction: React.FC<Props> = ({id, date, amount, category, isDeleting}) 
           </button>
           <button
             disabled={isDeleting}
+            onClick={handleEdit}
             className="btn btn-outline-primary"
             type="button"
           >Edit
