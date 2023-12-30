@@ -51,8 +51,6 @@ const Home = () => {
         }
       });
 
-      console.log(listOfElements)
-
       listOfElements = listOfElements.sort((prev, next) => {
         return prev?.createdAt > next?.createdAt ? 1 : -1
       })
