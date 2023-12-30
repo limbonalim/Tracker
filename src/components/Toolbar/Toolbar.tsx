@@ -14,9 +14,6 @@ const Toolbar = () => {
             <li className="nav-item">
               <NavLink to="/categories" className="nav-link">Categories</NavLink>
             </li>
-            <li className="nav-item">
-              <button type="button" className="nav-link">Add</button>
-            </li>
           </ul>
         </div>
       </div>
