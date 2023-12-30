@@ -6,7 +6,11 @@ import {
   selectCategory,
   selectCurrentEditTransaction
 } from '../../store/transaction/transactionSlice';
-import {createTransaction, fetcheditTransaction, getTransaction} from '../../store/transaction/transactionThunks';
+import {
+  createTransaction,
+  fetchEditTransaction,
+  getTransaction
+} from '../../store/transaction/transactionThunks';
 import {EditTransactionType, TransactionType} from '../../types';
 
 interface Edit {
@@ -81,7 +85,7 @@ const TransactionForm = () => {
         id: edit.id,
         transaction: editData,
       };
-      await dispatch(fetcheditTransaction(data));
+      await dispatch(fetchEditTransaction(data));
     }
 
     const data: TransactionType = {

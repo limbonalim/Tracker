@@ -67,7 +67,7 @@ export const deleteTransaction = createAsyncThunk<void, string>(
   }
 );
 
-export const fetcheditTransaction = createAsyncThunk<void, EditTransactionType>(
+export const fetchEditTransaction = createAsyncThunk<void, EditTransactionType>(
   'transaction/editTransaction',
   async ({transaction, id}) => {
     const response = await axiosApi.put(`/tracker/transaction/${id}.json`, transaction);

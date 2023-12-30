@@ -10,6 +10,8 @@ interface TrackerState {
   isCreateCategory: boolean;
   currentEditCategory: Category | null;
   isLoading: boolean;
+  isShowAlert: boolean;
+  messageAlert: string;
 }
 
 const initialState: TrackerState = {
@@ -17,7 +19,9 @@ const initialState: TrackerState = {
   isShowModal: false,
   isCreateCategory: false,
   currentEditCategory: null,
-  isLoading: false
+  isLoading: false,
+  isShowAlert: false,
+  messageAlert: '',
 };
 
 const categorySlice = createSlice({
@@ -41,6 +45,10 @@ const categorySlice = createSlice({
     setDelete: (state, {payload: id}: PayloadAction<string>) => {
       const index = state.category.findIndex((item) => item.id === id);
       state.category[index].isDeleting = true;
+    },
+    closeAlert: (state) => {
+      state.isShowAlert = false;
+      state.messageAlert = '';
     }
   },
   extraReducers: (builder) => {
@@ -56,14 +64,17 @@ const categorySlice = createSlice({
       console.log('[getCategory.rejected]');
       state.isLoading = false;
     });
-    builder.addCase(createCategory.rejected, (state) => {
-      console.log('TODO');
+    builder.addCase(createCategory.rejected, (state, {error}) => {
+      state.isShowAlert = true;
+      state.messageAlert = error.message? error.message : '';
     });
-    builder.addCase(editCategoryFetch.rejected, (state) => {
-      console.log('TODO');
+    builder.addCase(editCategoryFetch.rejected, (state, {error}) => {
+      state.isShowAlert = true;
+      state.messageAlert = error.message? error.message : '';
     });
-    builder.addCase(deleteCategoryFetch.rejected, (state) => {
-      console.log('TODO');
+    builder.addCase(deleteCategoryFetch.rejected, (state, {error}) => {
+      state.isShowAlert = true;
+      state.messageAlert = error.message? error.message : '';
     });
   }
 });
@@ -73,6 +84,8 @@ export const selectIsShowModal = (state: RootState) => state.category.isShowModa
 export const selectIsCreateCategory = (state: RootState) => state.category.isCreateCategory;
 export const selectCurrentEditCategory = (state: RootState) => state.category.currentEditCategory;
 export const selectIsLoading = (state: RootState) => state.category.isLoading;
+export const selectIsShowAlert = (state: RootState) => state.category.isShowAlert;
+export const selectMessageAlert = (state: RootState) => state.category.messageAlert;
 
 
 export const {
@@ -80,6 +93,7 @@ export const {
   closeModal,
   setCurrentEditCategory,
   clearCurrentEditCategory,
-  setDelete
+  setDelete,
+  closeAlert
 } = categorySlice.actions;
 export const categoryReducers = categorySlice.reducer;

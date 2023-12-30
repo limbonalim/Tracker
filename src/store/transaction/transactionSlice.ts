@@ -1,6 +1,11 @@
 import {RootState} from '../../app/store';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {getTransaction} from './transactionThunks';
+import {
+  createTransaction,
+  deleteTransaction,
+  fetchEditTransaction,
+  getTransaction
+} from './transactionThunks';
 import {Category, EditTransaction, Transaction, TransactionWhitCategory} from '../../types';
 
 
@@ -11,7 +16,9 @@ interface TransactionState {
   isCreateTransaction: boolean;
   total: number;
   currentEditTransaction: EditTransaction| null;
-  isLoading: boolean
+  isLoading: boolean;
+  isShowAlert: boolean;
+  messageAlert: string;
 }
 
 const initialState: TransactionState = {
@@ -22,6 +29,8 @@ const initialState: TransactionState = {
   total: 0,
   currentEditTransaction: null,
   isLoading: false,
+  isShowAlert: false,
+  messageAlert: ''
 };
 
 const transactionSlice = createSlice({
@@ -46,11 +55,14 @@ const transactionSlice = createSlice({
     },
     clearCurrentEdit: (state) => {
       state.currentEditTransaction = null;
+    },
+    closeTrAlert: (state) => {
+      state.isShowAlert = false;
+      state.messageAlert = '';
     }
   },
   extraReducers: (builder) => {
     builder.addCase(getTransaction.pending, (state) => {
-      console.log('getTransaction.pending');
       state.isLoading = true;
     });
     builder.addCase(getTransaction.fulfilled, (state, {payload: data}: PayloadAction<TransactionWhitCategory>) => {
@@ -58,9 +70,22 @@ const transactionSlice = createSlice({
       state.category = data.category;
       state.isLoading = false;
     });
-    builder.addCase(getTransaction.rejected, (state) => {
-      console.log('getTransaction.rejected');
+    builder.addCase(getTransaction.rejected, (state, {error}) => {
       state.isLoading = false;
+      state.isShowAlert = true;
+      state.messageAlert = error.message? error.message : '';
+    });
+    builder.addCase(createTransaction.rejected, (state, {error}) => {
+      state.isShowAlert = true;
+      state.messageAlert = error.message? error.message : '';
+    });
+    builder.addCase(deleteTransaction.rejected, (state, {error}) => {
+      state.isShowAlert = true;
+      state.messageAlert = error.message? error.message : '';
+    });
+    builder.addCase(fetchEditTransaction.rejected, (state, {error}) => {
+      state.isShowAlert = true;
+      state.messageAlert = error.message? error.message : '';
     });
   }
 });
@@ -71,12 +96,16 @@ export const selectCategory = (state: RootState) => state.transaction.category;
 export const selectTotal = (state: RootState) => state.transaction.total;
 export const selectCurrentEditTransaction = (state: RootState) => state.transaction.currentEditTransaction;
 export const selectIsLoading = (state: RootState) => state.transaction.isLoading;
+export const selectTransactionIsShowAlert = (state: RootState) => state.category.isShowAlert;
+export const selectTransactionMessageAlert = (state: RootState) => state.category.messageAlert;
+
 export const {
   showTransactionModal,
   closeTransactionModal,
   setTotal,
   setDelete,
   setCurrentEdit,
-  clearCurrentEdit
+  clearCurrentEdit,
+  closeTrAlert
 } = transactionSlice.actions;
 export const transactionReducers = transactionSlice.reducer;
