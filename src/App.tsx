@@ -1,17 +1,17 @@
 import {Route, Routes, useLocation} from 'react-router-dom';
-import {Alert} from "react-bootstrap";
+import {Alert} from 'react-bootstrap';
 import Layout from './containers/Layout/Layout';
 import NotFound from './components/NotFound/NotFound';
 import Home from './containers/Home/Home';
 import Categories from './containers/Categories/Categories';
 import MyModal from './components/MyModal/MyModal';
-import {useAppDispatch, useAppSelector} from "./app/hooks";
-import {closeAlert, selectIsShowAlert, selectMessageAlert} from "./store/category/categorySlice";
+import {useAppDispatch, useAppSelector} from './app/hooks';
+import {closeAlert, selectIsShowAlert, selectMessageAlert} from './store/category/categorySlice';
 import {
   closeTrAlert,
   selectTransactionIsShowAlert,
   selectTransactionMessageAlert
-} from "./store/transaction/transactionSlice";
+} from './store/transaction/transactionSlice';
 
 const App = () => {
   const showCategoryAlert = useAppSelector(selectIsShowAlert);
@@ -28,7 +28,7 @@ const App = () => {
         {categoryMessage}
       </p>
     </Alert>
-  )
+  );
 
   if (pathname === '/') {
     alert = (
@@ -38,7 +38,7 @@ const App = () => {
           {transactionMessage}
         </p>
       </Alert>
-    )
+    );
   }
 
 

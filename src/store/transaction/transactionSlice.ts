@@ -15,7 +15,7 @@ interface TransactionState {
   isShowModal: boolean;
   isCreateTransaction: boolean;
   total: number;
-  currentEditTransaction: EditTransaction| null;
+  currentEditTransaction: EditTransaction | null;
   isLoading: boolean;
   isShowAlert: boolean;
   messageAlert: string;
@@ -73,19 +73,19 @@ const transactionSlice = createSlice({
     builder.addCase(getTransaction.rejected, (state, {error}) => {
       state.isLoading = false;
       state.isShowAlert = true;
-      state.messageAlert = error.message? error.message : '';
+      state.messageAlert = error.message ? error.message : '';
     });
     builder.addCase(createTransaction.rejected, (state, {error}) => {
       state.isShowAlert = true;
-      state.messageAlert = error.message? error.message : '';
+      state.messageAlert = error.message ? error.message : '';
     });
     builder.addCase(deleteTransaction.rejected, (state, {error}) => {
       state.isShowAlert = true;
-      state.messageAlert = error.message? error.message : '';
+      state.messageAlert = error.message ? error.message : '';
     });
     builder.addCase(fetchEditTransaction.rejected, (state, {error}) => {
       state.isShowAlert = true;
-      state.messageAlert = error.message? error.message : '';
+      state.messageAlert = error.message ? error.message : '';
     });
   }
 });

@@ -95,6 +95,7 @@ const TransactionForm = () => {
     };
     await dispatch(createTransaction(data));
     dispatch(getTransaction());
+    dispatch(closeTransactionModal());
   };
 
   return (

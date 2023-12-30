@@ -66,15 +66,15 @@ const categorySlice = createSlice({
     });
     builder.addCase(createCategory.rejected, (state, {error}) => {
       state.isShowAlert = true;
-      state.messageAlert = error.message? error.message : '';
+      state.messageAlert = error.message ? error.message : '';
     });
     builder.addCase(editCategoryFetch.rejected, (state, {error}) => {
       state.isShowAlert = true;
-      state.messageAlert = error.message? error.message : '';
+      state.messageAlert = error.message ? error.message : '';
     });
     builder.addCase(deleteCategoryFetch.rejected, (state, {error}) => {
       state.isShowAlert = true;
-      state.messageAlert = error.message? error.message : '';
+      state.messageAlert = error.message ? error.message : '';
     });
   }
 });
