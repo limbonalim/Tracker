@@ -23,7 +23,7 @@ const TransactionForm = () => {
   });
   const categories = useAppSelector(selectCategory);
   const dispatch = useAppDispatch();
-  const [edit, setEdit] = useState<Edit | null>(null)
+  const [edit, setEdit] = useState<Edit | null>(null);
   const editTransaction = useAppSelector(selectCurrentEditTransaction);
 
   const incomeOptions = categories.reduce((acc: React.JSX.Element[], category) => {
@@ -45,12 +45,12 @@ const TransactionForm = () => {
       setEdit({
         id: editTransaction.id,
         createAt: editTransaction.createdAt,
-      })
+      });
       setTransaction({
         type: editTransaction.type,
         category: editTransaction.category.id,
         amount: editTransaction.amount.toString(),
-      })
+      });
       dispatch(clearCurrentEdit());
     }
   }, []);
@@ -77,11 +77,11 @@ const TransactionForm = () => {
         category: transaction.category,
         amount: parseFloat(transaction.amount),
       };
-      const data:EditTransactionType = {
+      const data: EditTransactionType = {
         id: edit.id,
         transaction: editData,
-      }
-      await dispatch(fetcheditTransaction(data))
+      };
+      await dispatch(fetcheditTransaction(data));
     }
 
     const data: TransactionType = {
@@ -147,7 +147,8 @@ const TransactionForm = () => {
           onClick={handleCancel}
           type="button"
           className="btn btn-outline-secondary"
-        >Cancel</button>
+        >Cancel
+        </button>
       </div>
     </form>
   );

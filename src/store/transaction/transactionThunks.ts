@@ -75,4 +75,4 @@ export const fetcheditTransaction = createAsyncThunk<void, EditTransactionType>(
       throw new Error('Try later');
     }
   }
-)
+);

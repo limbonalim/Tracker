@@ -25,6 +25,10 @@ const CategoriesForm = () => {
     }
   }, [editCategory]);
 
+  const handleCancel = () => {
+    dispatch(closeModal());
+  };
+
   const onChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const {name, value} = e.target;
     setCategory(prevState => {
@@ -80,7 +84,12 @@ const CategoriesForm = () => {
       </div>
       <div className="d-flex gap-2">
         <button type="submit" className="btn btn-outline-success">Add</button>
-        <button type="button" className="btn btn-outline-secondary">Cancel</button>
+        <button
+          onClick={handleCancel}
+          type="button"
+          className="btn btn-outline-secondary"
+        >Cancel
+        </button>
       </div>
     </form>
   );
