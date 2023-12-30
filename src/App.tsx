@@ -3,7 +3,7 @@ import {Route, Routes} from 'react-router-dom';
 import NotFound from './components/NotFound/NotFound';
 import Home from './containers/Home/Home';
 import Categories from './containers/Categories/Categories';
-import TransactionForm from "./components/TransactionForm/TransactionForm";
+import MyModal from './components/MyModal/MyModal';
 
 const App = () => {
 
@@ -17,7 +17,7 @@ const App = () => {
           <Route path="*" element={(<NotFound/>)}/>
         </Routes>
       </Layout>
-      <TransactionForm/>
+      <MyModal/>
     </>
   );
 };
