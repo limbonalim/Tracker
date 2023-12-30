@@ -51,14 +51,16 @@ const transactionSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getTransaction.pending, (state) => {
       console.log('getTransaction.pending');
+      state.isLoading = true;
     });
     builder.addCase(getTransaction.fulfilled, (state, {payload: data}: PayloadAction<TransactionWhitCategory>) => {
-      console.log('getTransaction.fulfilled');
       state.transaction = data.transactions;
       state.category = data.category;
+      state.isLoading = false;
     });
     builder.addCase(getTransaction.rejected, (state) => {
       console.log('getTransaction.rejected');
+      state.isLoading = false;
     });
   }
 });
@@ -68,8 +70,7 @@ export const selectIsShowTransactionModal = (state: RootState) => state.transact
 export const selectCategory = (state: RootState) => state.transaction.category;
 export const selectTotal = (state: RootState) => state.transaction.total;
 export const selectCurrentEditTransaction = (state: RootState) => state.transaction.currentEditTransaction;
-
-
+export const selectIsLoading = (state: RootState) => state.transaction.isLoading;
 export const {
   showTransactionModal,
   closeTransactionModal,

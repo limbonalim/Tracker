@@ -1,13 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
-import {selectCategory, showCategoryModal} from '../../store/category/categorySlice';
+import {selectCategory, selectIsLoading, showCategoryModal} from '../../store/category/categorySlice';
 import {getCategory} from '../../store/category/categoryThunks';
 import Category from '../../components/Category/Category';
+import Loading from '../../components/Loading/Loading';
 
 const Categories = () => {
   const categories = useAppSelector(selectCategory);
   const dispatch = useAppDispatch();
   const [render, setRender] = useState<React.JSX.Element[] | null>(null);
+  const loading = useAppSelector(selectIsLoading);
 
   useEffect(() => {
     dispatch(getCategory());
@@ -31,7 +33,7 @@ const Categories = () => {
     dispatch(showCategoryModal());
   };
 
-  return (
+  return loading ? <Loading/> : (
     <>
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h2>Category</h2>

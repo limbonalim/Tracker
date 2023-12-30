@@ -4,10 +4,11 @@ import {
   setTotal,
   selectCategory, selectTotal,
   selectTransaction,
-  showTransactionModal
+  showTransactionModal, selectIsLoading
 } from '../../store/transaction/transactionSlice';
 import {getTransaction} from '../../store/transaction/transactionThunks';
 import Transaction from '../../components/Transaction/Transaction';
+import Loading from '../../components/Loading/Loading';
 
 const Home = () => {
   const transactions = useAppSelector(selectTransaction);
@@ -15,6 +16,7 @@ const Home = () => {
   const dispatch = useAppDispatch();
   const total = useAppSelector(selectTotal);
   const [render, setRender] = useState<(React.JSX.Element | null)[]>([]);
+  const loading = useAppSelector(selectIsLoading);
 
   useEffect(() => {
     dispatch(getTransaction());
@@ -70,10 +72,9 @@ const Home = () => {
     dispatch(showTransactionModal());
   };
 
-  return (
+  return loading ? <Loading/> : (
     <>
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h2>Category</h2>
         <span>Total: {total}</span>
         <button
           onClick={handleCreate}

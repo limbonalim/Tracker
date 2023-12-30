@@ -72,6 +72,7 @@ export const selectCategory = (state: RootState) => state.category.category;
 export const selectIsShowModal = (state: RootState) => state.category.isShowModal;
 export const selectIsCreateCategory = (state: RootState) => state.category.isCreateCategory;
 export const selectCurrentEditCategory = (state: RootState) => state.category.currentEditCategory;
+export const selectIsLoading = (state: RootState) => state.category.isLoading;
 
 
 export const {

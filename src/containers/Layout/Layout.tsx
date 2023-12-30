@@ -8,7 +8,7 @@ interface Props extends PropsWithChildren {
 const Layout: React.FC<Props> = ({children}) => {
   return (
     <>
-      <header>
+      <header className="mb-5">
         <Toolbar/>
       </header>
       <main>
