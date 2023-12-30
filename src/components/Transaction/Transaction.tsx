@@ -24,9 +24,12 @@ const Transaction: React.FC<Props> = ({id, date, amount, category, isDeleting}) 
     );
 
   const handleDelete = async () => {
-    dispatch(setDelete(id));
-    await dispatch(deleteTransaction(id));
-    dispatch(getTransaction());
+    const answer = confirm('Do you want delete?');
+    if (answer) {
+      dispatch(setDelete(id));
+      await dispatch(deleteTransaction(id));
+      dispatch(getTransaction());
+    }
   };
 
   const handleEdit = () => {

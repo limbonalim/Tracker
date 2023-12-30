@@ -8,9 +8,12 @@ const Category: React.FC<Category> = ({name, type, id, isDeleting}) => {
   const dispatch = useAppDispatch();
 
   const handleDelete = async () => {
-    dispatch(setDelete(id));
-    await dispatch(deleteCategoryFetch(id));
-    dispatch(getCategory());
+    const answer = confirm('Do you want delete?');
+    if (answer) {
+      dispatch(setDelete(id));
+      await dispatch(deleteCategoryFetch(id));
+      dispatch(getCategory());
+    }
   };
 
   const handleEdit = () => {
