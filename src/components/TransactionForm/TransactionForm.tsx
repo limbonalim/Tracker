@@ -86,14 +86,15 @@ const TransactionForm = () => {
         transaction: editData,
       };
       await dispatch(fetchEditTransaction(data));
+    } else {
+      const data: TransactionType = {
+        createdAt: new Date().toISOString(),
+        category: transaction.category,
+        amount: parseFloat(transaction.amount),
+      };
+      await dispatch(createTransaction(data));
     }
 
-    const data: TransactionType = {
-      createdAt: new Date().toISOString(),
-      category: transaction.category,
-      amount: parseFloat(transaction.amount),
-    };
-    await dispatch(createTransaction(data));
     dispatch(getTransaction());
     dispatch(closeTransactionModal());
   };
