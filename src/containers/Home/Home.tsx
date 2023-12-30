@@ -9,6 +9,7 @@ import {
 import {getTransaction} from '../../store/transaction/transactionThunks';
 import Transaction from '../../components/Transaction/Transaction';
 import Loading from '../../components/Loading/Loading';
+import {TransactionAndCategory} from "../../types";
 
 const Home = () => {
   const transactions = useAppSelector(selectTransaction);
@@ -24,7 +25,7 @@ const Home = () => {
 
   useEffect(() => {
     if (category.length > 0 && transactions.length > 0) {
-      let items = transactions.map((item) => {
+      let items: TransactionAndCategory[] = transactions.map((item) => {
         const index = category.findIndex((category) => category.id === item.category);
         if (index >= 0) {
           return {
@@ -32,14 +33,29 @@ const Home = () => {
             category: category[index],
           };
         }
-        return null;
+        return {
+          ...item,
+          category: {
+            id: '',
+            type: 'income',
+            name: '',
+            isDeleting: false,
+          },
+          id: '',
+        };
       });
 
-      const listOfElements = items.filter((element) => {
-        if (element) {
+      let listOfElements: TransactionAndCategory[] = items.filter((element) => {
+        if (element.id) {
           return element;
         }
       });
+
+      console.log(listOfElements)
+
+      listOfElements = listOfElements.sort((prev, next) => {
+        return prev?.createdAt > next?.createdAt ? 1 : -1
+      })
 
       const total = listOfElements.reduce((acc, element) => {
         if (element?.category.type === 'income') {

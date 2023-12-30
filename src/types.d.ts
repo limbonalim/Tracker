@@ -47,3 +47,11 @@ export interface EditTransactionType {
   transaction: TransactionType,
   id: string
 }
+
+export interface TransactionAndCategory {
+  id: string;
+  amount: number;
+  category: Category;
+  createdAt: string;
+  isDeleting: boolean;
+}
